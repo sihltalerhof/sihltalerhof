@@ -101,13 +101,12 @@ main.content {
 }
 
 .termine-list {
-  list-style: none;
-  padding: 0;
+  list-style: disc;
+  padding-left: 1.5rem;
 }
 
 .termine-list li {
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #ddd;
+  padding: 0.2rem 0;
 }
 
 .certifications {

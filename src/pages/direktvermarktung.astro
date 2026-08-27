@@ -10,12 +10,12 @@ const { Content } = await render(page);
 const termine = (await getCollection('termine'))
   .sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime());
 
-const formatter = new Intl.DateTimeFormat('de-CH', {
-  weekday: 'long',
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
-});
+const formatDate = (d: Date) => {
+  const dd = String(d.getUTCDate()).padStart(2, '0');
+  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const yyyy = d.getUTCFullYear();
+  return `${dd}.${mm}.${yyyy}`;
+};
 
 const noticeEntries = await Promise.all(
   (await getCollection('notices'))
@@ -39,7 +39,7 @@ const noticeEntries = await Promise.all(
   <ul class="termine-list" data-termine-liste>
     {termine.map((t) => (
       <li data-termin={t.data.datum.toISOString()}>
-        {formatter.format(t.data.datum)}, {t.data.uhrzeit} Uhr
+        {formatDate(t.data.datum)}
       </li>
     ))}
     <li data-termine-leer style="display:none;">Zur Zeit sind keine Termine bekannt.</li>

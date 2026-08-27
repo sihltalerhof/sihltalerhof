@@ -1,31 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ScheduledText from '../components/ScheduledText.astro';
-import { getCollection, getEntry, render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 
 const page = await getEntry('pages', 'home');
 if (!page) throw new Error('pages/home.md fehlt');
 const { Content } = await render(page);
-
-const noticeEntries = await Promise.all(
-  (await getCollection('notices'))
-    .filter((n) => n.data.page === 'home')
-    .map(async (n) => ({ entry: n, Content: (await render(n)).Content }))
-);
 ---
 <Layout title={page.data.title}>
   <div class="hero">
     <img src="/images/site/hero-hof.jpg" alt="Sihltalerhof" />
   </div>
-
-  {noticeEntries.map(({ entry, Content: NoticeContent }) => (
-    <ScheduledText from={entry.data.from} until={entry.data.until}>
-      <div class="notice">
-        <strong>{entry.data.title}</strong>
-        <NoticeContent />
-      </div>
-    </ScheduledText>
-  ))}
 
   <Content />
 
