@@ -85,6 +85,10 @@ h3 {
   color: var(--ribbon);
 }
 
+p + h3 {
+  margin-top: var(--space-3);
+}
+
 p {
   margin: 0 0 var(--space-2);
 }

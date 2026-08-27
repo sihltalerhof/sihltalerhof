@@ -6,9 +6,12 @@ title: "über uns"
 **Nadia und Christian Fässler-Günthard**
 mit Marinus, Silvan und Vivienne
 
-Adelmatt 11
+### Kontakt
+
+Adelmatt 11\
 8845 Studen
 
-info@sihltalerhof.ch
-076 307 24 54
-079 663 50 24
+[info@sihltalerhof.ch](mailto:info@sihltalerhof.ch)
+
+[076 307 24 54](tel:+41763072454)\
+[079 663 50 24](tel:+41796635024)
