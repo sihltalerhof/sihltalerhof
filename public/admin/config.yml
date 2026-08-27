@@ -1,8 +1,13 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: sihltalerhof/sihltalerhof
   branch: main
+  # Muss auf die Worker-URL aus cms-oauth-worker/ zeigen (ohne /callback),
+  # siehe cms-oauth-worker/README.md.
+  base_url: https://sihltalerhof-cms-auth.example.workers.dev
+  auth_endpoint: auth
 
-# Erlaubt lokales Testen der Bearbeitungsoberfläche ohne Netlify:
+# Erlaubt lokales Testen der Bearbeitungsoberfläche ohne den Worker:
 # `npx decap-server` in einem zweiten Terminal starten, dann /admin/ aufrufen.
 local_backend: true
 

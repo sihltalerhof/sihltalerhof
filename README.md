@@ -63,34 +63,45 @@ Die Datei `src/content/notices/beispiel-hinweis.md` ist ein Testeintrag zur
 Demonstration – vor dem Live-Schalten löschen oder durch echten Inhalt
 ersetzen.
 
-## Deployment (empfohlen: Netlify, kostenlos)
+## Deployment: GitHub Pages + eigene Domain
 
-Decap CMS braucht einen Login-Mechanismus. Am einfachsten ist **Netlify
-Identity + Git Gateway** – beides im kostenlosen Tarif enthalten und ohne
-eigenes OAuth-App-Setup nutzbar:
+Die Seite wird über GitHub Actions automatisch gebaut und auf GitHub Pages
+veröffentlicht (`.github/workflows/deploy.yml`, läuft bei jedem Push auf
+`main`). Da GitHub Pages nur statische Dateien ausliefert und – anders als
+Netlify – keinen eingebauten CMS-Login mitbringt, übernimmt dafür ein
+winziger, separat gehosteter Cloudflare Worker den GitHub-OAuth-Handshake
+(siehe `cms-oauth-worker/README.md` für die Einrichtung, dauert ca. 10
+Minuten und ist ebenfalls kostenlos).
 
-1. Repo auf GitHub erstellen und pushen.
-2. Auf [netlify.com](https://netlify.com) einloggen → "Add new site" → Repo
-   verbinden. Build command: `npm run build`, Publish directory: `dist`.
-3. Im Netlify-Dashboard: **Site settings → Identity → Enable Identity**.
-4. **Identity → Registration**: auf "Invite only" stellen (sonst kann sich
-   jede/r registrieren).
-5. **Identity → Services → Git Gateway**: aktivieren.
-6. Unter **Identity** die Betreiberin/den Betreiber per E-Mail einladen.
-7. Domain sihltalerhof.ch bei Netlify hinterlegen (DNS beim aktuellen
-   Registrar auf Netlify umbiegen, Anleitung im Netlify-Dashboard).
+### Einmalige Einrichtung
 
-Laufende Kosten: 0 CHF/Monat (Netlify Free Tier reicht für diese Seitengrösse
-bei weitem), einzige Fixkosten bleiben wie bisher die Domain-Registrierung.
+1. **Repo-Einstellungen**: GitHub → Settings → Pages → Source: "GitHub
+   Actions" auswählen (statt "Deploy from a branch").
+2. **Eigene Domain**: `public/CNAME` enthält bereits `sihltalerhof.ch`.
+   Beim Domain-Registrar einen DNS-Eintrag auf GitHub Pages setzen
+   (A-Records auf die GitHub-Pages-IPs oder ein ALIAS/ANAME-Record je nach
+   Registrar – Details: [GitHub-Doku zu Custom Domains](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site)).
+   Danach in den Pages-Einstellungen "Enforce HTTPS" aktivieren.
+3. **CMS-Login**: `cms-oauth-worker/README.md` durcharbeiten (GitHub OAuth
+   App erstellen, Worker deployen, `base_url` in `public/admin/config.yml`
+   auf die eigene Worker-URL setzen).
+4. Repo ist öffentlich (Voraussetzung für kostenloses GitHub Pages) – das
+   Client Secret aus Schritt 3 liegt nicht im Repo, sondern nur als Worker-
+   Secret bei Cloudflare.
 
-### Alternative: Cloudflare Pages
+Laufende Kosten: 0 CHF/Monat (GitHub Pages + Cloudflare Workers Free Tier
+reichen für diese Seitengrösse bei weitem), einzige Fixkosten bleiben wie
+bisher die Domain-Registrierung.
 
-Technisch ebenfalls kostenlos und etwas grosszügiger im Bandbreiten-Limit,
-erfordert für Decap CMS aber zusätzlich eine eigene GitHub-OAuth-App (oder
-einen kleinen selbst gehosteten OAuth-Proxy), da Cloudflare kein
-Äquivalent zu Netlify Identity/Git Gateway anbietet. Für den Aufwand lohnt
-sich das hier nicht – Netlify ist für diesen Anwendungsfall die pragmatischere
-Wahl.
+### Alternative: Netlify
+
+Wer den zusätzlichen Cloudflare-Worker vermeiden möchte: Netlify bringt mit
+**Identity + Git Gateway** einen CMS-Login ohne eigenes OAuth-Setup mit –
+dafür Hosting UND Login an einem Ort. In dem Fall `public/admin/config.yml`
+wieder auf `backend: { name: git-gateway, branch: main }` zurückstellen,
+den GitHub-Actions-Workflow deaktivieren/löschen und die Seite stattdessen
+über Netlify aus dem Repo bauen lassen (Build command: `npm run build`,
+Publish directory: `dist`).
 
 ## Build
 
