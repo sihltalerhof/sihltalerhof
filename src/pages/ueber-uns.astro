@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHead from '../components/PageHead.astro';
 import ScheduledText from '../components/ScheduledText.astro';
 import { getCollection, getEntry, render } from 'astro:content';
 
@@ -14,18 +15,27 @@ const noticeEntries = await Promise.all(
 );
 ---
 <Layout title={page.data.title}>
-  <div class="gallery" style="max-width:320px;">
-    <img src="/images/site/familie.jpg" alt="Familie Fässler-Günthard" />
+  <PageHead title={page.data.title} />
+
+  <div class="section">
+    {noticeEntries.map(({ entry, Content: NoticeContent }) => (
+      <ScheduledText from={entry.data.from} until={entry.data.until}>
+        <div class="notice">
+          <strong>{entry.data.title}</strong>
+          <NoticeContent />
+        </div>
+      </ScheduledText>
+    ))}
+
+    <img
+      class="framed-photo framed-photo--portrait"
+      src="/images/site/familie.jpg"
+      alt="Familie Fässler-Günthard"
+      width="1920"
+      height="2560"
+      loading="lazy"
+    />
+
+    <Content />
   </div>
-
-  {noticeEntries.map(({ entry, Content: NoticeContent }) => (
-    <ScheduledText from={entry.data.from} until={entry.data.until}>
-      <div class="notice">
-        <strong>{entry.data.title}</strong>
-        <NoticeContent />
-      </div>
-    </ScheduledText>
-  ))}
-
-  <Content />
 </Layout>

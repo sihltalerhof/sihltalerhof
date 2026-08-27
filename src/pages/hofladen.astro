@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHead from '../components/PageHead.astro';
 import ScheduledText from '../components/ScheduledText.astro';
 import { getCollection, getEntry, render } from 'astro:content';
 
@@ -14,21 +15,41 @@ const noticeEntries = await Promise.all(
 );
 ---
 <Layout title={page.data.title}>
-  {noticeEntries.map(({ entry, Content: NoticeContent }) => (
-    <ScheduledText from={entry.data.from} until={entry.data.until}>
-      <div class="notice">
-        <strong>{entry.data.title}</strong>
-        <NoticeContent />
-      </div>
-    </ScheduledText>
-  ))}
+  <PageHead title={page.data.title} />
 
-  <Content />
+  <div class="section">
+    {noticeEntries.map(({ entry, Content: NoticeContent }) => (
+      <ScheduledText from={entry.data.from} until={entry.data.until}>
+        <div class="notice">
+          <strong>{entry.data.title}</strong>
+          <NoticeContent />
+        </div>
+      </ScheduledText>
+    ))}
 
-  <div class="gallery">
-    <img src="/images/site/hofladen-1.jpg" alt="Hofladen" />
-    <img src="/images/site/hofladen-2.jpg" alt="Hofladen" />
-    <img src="/images/site/hofladen-3.jpg" alt="Hofladen" />
-    <img src="/images/site/hofladen-4.jpg" alt="Hofladen" />
+    <Content />
+
+    <div class="gallery">
+      <img
+        src="/images/site/hofladen-1.jpg"
+        alt="Der Sihltalerhofladen weihnachtlich beleuchtet im Schnee"
+        loading="lazy"
+      />
+      <img
+        src="/images/site/hofladen-2.jpg"
+        alt="Regal im Hofladen mit Honig, Geschenkartikeln und Holzschnitzereien"
+        loading="lazy"
+      />
+      <img
+        src="/images/site/hofladen-3.jpg"
+        alt="Kühlschrank mit Trockenwürsten im Hofladen"
+        loading="lazy"
+      />
+      <img
+        src="/images/site/hofladen-4.jpg"
+        alt="Tiefkühltruhe mit verpacktem Bio-Rindfleisch"
+        loading="lazy"
+      />
+    </div>
   </div>
 </Layout>

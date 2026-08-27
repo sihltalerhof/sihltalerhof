@@ -21,15 +21,24 @@ const navItems = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/png" href="/images/site/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <title>{title} | Sihltalerhof</title>
   </head>
   <body>
+    <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
     <header class="site-header">
       <div class="inner">
         <a href="/" class="brand">
           <img class="logo" src="/images/site/logo.png" alt="Sihltalerhof Logo" />
+          <span class="brand-name">Sihltalerhof</span>
         </a>
-        <nav class="main-nav">
+        <nav class="main-nav" aria-label="Hauptnavigation">
           {navItems.map((item) => (
             <a
               href={item.href}
@@ -42,15 +51,15 @@ const navItems = [
       </div>
     </header>
 
-    <p class="tagline">Kühe würden den Sihltalerhof wählen</p>
-
-    <main class="content">
+    <main class="content" id="main">
       <slot />
     </main>
 
     <footer class="site-footer">
-      <p>&copy; {new Date().getFullYear()} Sihltalerhof · Adelmatt 11, 8845 Studen</p>
-      <p><a href="mailto:info@sihltalerhof.ch">info@sihltalerhof.ch</a></p>
+      <div class="inner">
+        <p>&copy; {new Date().getFullYear()} Sihltalerhof · Adelmatt 11, 8845 Studen</p>
+        <p><a href="mailto:info@sihltalerhof.ch">info@sihltalerhof.ch</a></p>
+      </div>
     </footer>
 
     <script>

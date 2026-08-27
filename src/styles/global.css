@@ -1,147 +1,450 @@
+/* ---------------------------------------------------------------
+   Design tokens
+   Palette derived from the farm's own badge mark: cream circle,
+   black woodcut linework, red ribbon banner. Moss green kept as a
+   minor supporting tone (pasture), never a dominant surface color.
+----------------------------------------------------------------- */
 :root {
-  --green-dark: #2f4a2f;
-  --green: #4b6b3a;
-  --cream: #faf7f0;
-  --brown: #5c4429;
-  --text: #2b2b26;
-  --max-width: 960px;
+  --cream: #f5efe1;
+  --cream-soft: #ece3cd;
+  --charcoal: #211d18;
+  --ink: #2a2519;
+  --ribbon: #ab3a26;
+  --ribbon-dark: #8a2e1d;
+  --moss: #6b7a4f;
+
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Work Sans", "Segoe UI", system-ui, sans-serif;
+
+  --max-width: 1000px;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.75rem;
+  --space-4: 2.75rem;
+  --space-5: 4.5rem;
+
+  --radius: 6px;
 }
 
-* { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-html, body {
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
   margin: 0;
-  padding: 0;
   background: var(--cream);
-  color: var(--text);
-  font-family: "Georgia", "Iowan Old Style", serif;
-  line-height: 1.6;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--green-dark); }
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--charcoal);
+  line-height: 1.15;
+  margin: 0 0 var(--space-2);
+  font-weight: 600;
+}
 
+h1 {
+  font-size: clamp(2.1rem, 4vw + 1rem, 3.2rem);
+  font-optical-sizing: auto;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 2vw + 1rem, 1.9rem);
+}
+
+h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ribbon);
+}
+
+p {
+  margin: 0 0 var(--space-2);
+}
+
+a {
+  color: var(--ribbon);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--ribbon-dark);
+}
+
+a:focus-visible,
+button:focus-visible,
+[data-schedule] a:focus-visible {
+  outline: 3px solid var(--moss);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--cream);
+  color: var(--charcoal);
+  padding: 0.75rem 1.25rem;
+  z-index: 100;
+  border-radius: 0 0 var(--radius) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* ---------------------------------------------------------------
+   Header
+----------------------------------------------------------------- */
 .site-header {
-  background: var(--green-dark);
-  color: var(--cream);
+  background: var(--charcoal);
 }
 
 .site-header .inner {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 1rem 1.25rem;
+  padding: var(--space-2) var(--space-2);
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
+.site-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
 .site-header img.logo {
-  height: 48px;
+  height: 52px;
   width: auto;
 }
 
-.site-header .brand {
-  font-size: 1.4rem;
-  font-weight: bold;
+.site-header .brand-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
   color: var(--cream);
-  text-decoration: none;
+  letter-spacing: 0.01em;
 }
 
 nav.main-nav {
   margin-left: auto;
   display: flex;
-  gap: 1.25rem;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
 nav.main-nav a {
   color: var(--cream);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+}
+
+nav.main-nav a:hover {
+  color: var(--cream);
+  border-bottom-color: var(--moss);
 }
 
 nav.main-nav a[aria-current="page"] {
-  text-decoration: underline;
-  font-weight: bold;
+  border-bottom-color: var(--ribbon);
+  font-weight: 600;
 }
 
-.hero {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 1.25rem;
-}
-
-.hero img {
+/* ---------------------------------------------------------------
+   Ribbon divider — the site's signature device, echoing the
+   ribbon banner on the farm's own badge mark.
+----------------------------------------------------------------- */
+.ribbon-divider {
+  display: block;
   width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  border-radius: 4px;
+  height: auto;
 }
 
-.tagline {
-  text-align: center;
-  font-style: italic;
-  color: var(--green-dark);
-  font-size: 1.3rem;
-  margin: 1.5rem 0;
+.ribbon-divider--page {
+  max-width: 220px;
+  margin: var(--space-1) 0 var(--space-3);
 }
 
-main.content {
+/* ---------------------------------------------------------------
+   Hero (home page)
+----------------------------------------------------------------- */
+.hero-wrap {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 1.25rem 3rem;
+  padding: var(--space-3) var(--space-2) 0;
+}
+
+.hero-photo {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.hero-photo img {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+}
+
+.hero-banner {
+  background: var(--ribbon);
+  color: var(--cream);
+  text-align: center;
+  padding: var(--space-3) var(--space-2);
+  margin: -1.25rem auto 0;
+  max-width: 720px;
+  position: relative;
+  clip-path: polygon(
+    0 12px,
+    16px 0,
+    calc(100% - 16px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 16px) 100%,
+    16px 100%,
+    0 calc(100% - 12px)
+  );
+}
+
+.framed-photo {
+  border-radius: var(--radius);
+  overflow: hidden;
+  object-fit: cover;
+  margin-bottom: var(--space-3);
+}
+
+.framed-photo--portrait {
+  max-width: 300px;
+  aspect-ratio: 3 / 4;
+  width: 100%;
+}
+
+.hero-banner p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw + 0.8rem, 1.9rem);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------------------
+   Page head (inner pages)
+----------------------------------------------------------------- */
+.page-head {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2) 0;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ribbon);
+  margin: 0 0 0.3rem;
+}
+
+.page-head h1 {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------
+   Main content
+----------------------------------------------------------------- */
+main.content {
+  display: block;
+}
+
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-2) var(--space-5);
 }
 
 .notice {
-  background: #fff7e0;
-  border-left: 4px solid var(--brown);
-  padding: 0.75rem 1rem;
-  margin: 1rem 0;
-  border-radius: 2px;
+  background: var(--cream-soft);
+  border-left: 4px solid var(--ribbon);
+  padding: var(--space-2) var(--space-2);
+  margin: 0 0 var(--space-3);
+  border-radius: 0 var(--radius) var(--radius) 0;
 }
 
+.notice strong {
+  display: block;
+  font-family: var(--font-display);
+  color: var(--charcoal);
+  margin-bottom: 0.25rem;
+}
+
+/* ---------------------------------------------------------------
+   Termine list
+----------------------------------------------------------------- */
 .termine-list {
-  list-style: disc;
-  padding-left: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0 0;
+  max-width: 340px;
 }
 
 .termine-list li {
-  padding: 0.2rem 0;
+  position: relative;
+  padding: 0.55rem 0 0.55rem 1.4rem;
+  border-bottom: 1px solid var(--cream-soft);
+  font-variant-numeric: tabular-nums;
 }
 
+.termine-list li[data-termin]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.05rem;
+  width: 8px;
+  height: 8px;
+  background: var(--ribbon);
+  border-radius: 50%;
+}
+
+/* ---------------------------------------------------------------
+   Certification seals
+----------------------------------------------------------------- */
 .certifications {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
+  align-items: stretch;
+  margin-top: var(--space-4);
+}
+
+.cert-seal {
+  background: #fff;
+  border: 1px solid var(--cream-soft);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.2rem;
+  height: 76px;
+  display: flex;
   align-items: center;
-  margin-top: 2rem;
 }
 
-.certifications img {
-  height: 60px;
+.cert-seal img {
+  max-height: 100%;
+  max-width: 140px;
   width: auto;
+  object-fit: contain;
 }
 
+/* ---------------------------------------------------------------
+   Gallery
+----------------------------------------------------------------- */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.75rem;
-  margin: 1.5rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
 }
 
 .gallery img {
   width: 100%;
-  height: 160px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: var(--radius);
+  transition: transform 0.25s ease;
 }
 
+.gallery a:hover img,
+.gallery a:focus-visible img {
+  transform: scale(1.03);
+}
+
+/* ---------------------------------------------------------------
+   Footer
+----------------------------------------------------------------- */
 .site-footer {
-  background: var(--brown);
-  color: var(--cream);
-  text-align: center;
-  padding: 1.5rem 1.25rem;
+  background: var(--charcoal);
+  color: var(--cream-soft);
+  padding: var(--space-3) var(--space-2);
+}
+
+.site-footer .inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
   font-size: 0.9rem;
 }
 
-.site-footer a { color: var(--cream); }
+.site-footer a {
+  color: var(--cream);
+}
+
+/* ---------------------------------------------------------------
+   Responsive
+----------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .site-header .inner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  nav.main-nav {
+    margin-left: 0;
+    justify-content: center;
+    width: 100%;
+    gap: var(--space-2);
+  }
+
+  .hero-banner {
+    margin-top: -0.75rem;
+    clip-path: none;
+    border-radius: var(--radius);
+  }
+
+  .site-footer .inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}

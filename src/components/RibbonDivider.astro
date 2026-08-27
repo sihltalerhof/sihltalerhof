@@ -1,0 +1,20 @@
+---
+// Echoes the notched ribbon banner on the farm's own badge logo.
+// Used as the single recurring signature device across the site.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+<svg
+  class={`ribbon-divider ${className}`}
+  viewBox="0 0 220 14"
+  preserveAspectRatio="none"
+  role="presentation"
+  aria-hidden="true"
+>
+  <polygon
+    points="0,7 8,0 212,0 220,7 212,14 8,14"
+    fill="var(--ribbon)"
+  ></polygon>
+</svg>

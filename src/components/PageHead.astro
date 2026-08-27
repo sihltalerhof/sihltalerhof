@@ -1,0 +1,13 @@
+---
+import RibbonDivider from './RibbonDivider.astro';
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<div class="page-head">
+  <p class="eyebrow">Sihltalerhof</p>
+  <h1>{title}</h1>
+  <RibbonDivider class="ribbon-divider--page" />
+</div>
