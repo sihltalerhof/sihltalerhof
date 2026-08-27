@@ -109,3 +109,4 @@ Publish directory: `dist`).
 npm run build     # erzeugt dist/ (rein statische Dateien)
 npm run preview   # dist/ lokal wie im Live-Betrieb testen
 ```
+
