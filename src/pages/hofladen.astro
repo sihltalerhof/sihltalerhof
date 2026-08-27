@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PageHead from '../components/PageHead.astro';
 import ScheduledText from '../components/ScheduledText.astro';
+import { withBase } from '../lib/base';
 import { getCollection, getEntry, render } from 'astro:content';
 
 const page = await getEntry('pages', 'hofladen');
@@ -31,22 +32,22 @@ const noticeEntries = await Promise.all(
 
     <div class="gallery">
       <img
-        src="/images/site/hofladen-1.jpg"
+        src={withBase('images/site/hofladen-1.jpg')}
         alt="Der Sihltalerhofladen weihnachtlich beleuchtet im Schnee"
         loading="lazy"
       />
       <img
-        src="/images/site/hofladen-2.jpg"
+        src={withBase('images/site/hofladen-2.jpg')}
         alt="Regal im Hofladen mit Honig, Geschenkartikeln und Holzschnitzereien"
         loading="lazy"
       />
       <img
-        src="/images/site/hofladen-3.jpg"
+        src={withBase('images/site/hofladen-3.jpg')}
         alt="Kühlschrank mit Trockenwürsten im Hofladen"
         loading="lazy"
       />
       <img
-        src="/images/site/hofladen-4.jpg"
+        src={withBase('images/site/hofladen-4.jpg')}
         alt="Tiefkühltruhe mit verpacktem Bio-Rindfleisch"
         loading="lazy"
       />

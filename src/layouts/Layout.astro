@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { withBase } from '../lib/base';
 
 interface Props {
   title: string;
@@ -9,10 +10,10 @@ const { title, description = 'Sihltalerhof – Bio-Bauernhof in Studen' } = Astr
 const currentPath = Astro.url.pathname;
 
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/ueber-uns/', label: 'über uns' },
-  { href: '/direktvermarktung/', label: 'Direktvermarktung' },
-  { href: '/hofladen/', label: 'Hofladen' },
+  { href: '', label: 'Home' },
+  { href: 'ueber-uns/', label: 'über uns' },
+  { href: 'direktvermarktung/', label: 'Direktvermarktung' },
+  { href: 'hofladen/', label: 'Hofladen' },
 ];
 ---
 <html lang="de">
@@ -20,7 +21,7 @@ const navItems = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/png" href="/images/site/logo.png" />
+    <link rel="icon" type="image/png" href={withBase('images/site/logo.png')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -34,15 +35,15 @@ const navItems = [
 
     <header class="site-header">
       <div class="inner">
-        <a href="/" class="brand">
-          <img class="logo" src="/images/site/logo.png" alt="Sihltalerhof Logo" />
+        <a href={withBase('')} class="brand">
+          <img class="logo" src={withBase('images/site/logo.png')} alt="Sihltalerhof Logo" />
           <span class="brand-name">Sihltalerhof</span>
         </a>
         <nav class="main-nav" aria-label="Hauptnavigation">
           {navItems.map((item) => (
             <a
-              href={item.href}
-              aria-current={currentPath === item.href ? 'page' : undefined}
+              href={withBase(item.href)}
+              aria-current={currentPath === withBase(item.href) ? 'page' : undefined}
             >
               {item.label}
             </a>

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PageHead from '../components/PageHead.astro';
 import ScheduledText from '../components/ScheduledText.astro';
+import { withBase } from '../lib/base';
 import { getCollection, getEntry, render } from 'astro:content';
 
 const page = await getEntry('pages', 'ueber-uns');
@@ -29,7 +30,7 @@ const noticeEntries = await Promise.all(
 
     <div class="framed-photo framed-photo--portrait">
       <img
-        src="/images/site/familie.jpg"
+        src={withBase('images/site/familie.jpg')}
         alt="Familie Fässler-Günthard"
         width="1920"
         height="2560"

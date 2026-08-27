@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/base';
 import { getEntry, render } from 'astro:content';
 
 const page = await getEntry('pages', 'home');
@@ -10,7 +11,7 @@ const { Content } = await render(page);
   <div class="hero-wrap">
     <div class="hero-photo">
       <img
-        src="/images/site/hero-hof.jpg"
+        src={withBase('images/site/hero-hof.jpg')}
         alt="Der Sihltalerhof mit Weideland im Sihltal"
         width="2560"
         height="1920"
@@ -26,13 +27,13 @@ const { Content } = await render(page);
 
     <div class="certifications">
       <div class="cert-seal">
-        <img src="/images/site/bio-suisse-logo.jpg" alt="Bio Suisse" loading="lazy" />
+        <img src={withBase('images/site/bio-suisse-logo.jpg')} alt="Bio Suisse" loading="lazy" />
       </div>
       <div class="cert-seal">
-        <img src="/images/site/mutterkuh-logo.jpg" alt="Mutterkuh Schweiz" loading="lazy" />
+        <img src={withBase('images/site/mutterkuh-logo.jpg')} alt="Mutterkuh Schweiz" loading="lazy" />
       </div>
       <div class="cert-seal">
-        <img src="/images/site/kagfreiland-logo.jpg" alt="Kagfreiland" loading="lazy" />
+        <img src={withBase('images/site/kagfreiland-logo.jpg')} alt="Kagfreiland" loading="lazy" />
       </div>
     </div>
   </div>

@@ -63,35 +63,44 @@ Die Datei `src/content/notices/beispiel-hinweis.md` ist ein Testeintrag zur
 Demonstration – vor dem Live-Schalten löschen oder durch echten Inhalt
 ersetzen.
 
-## Deployment: GitHub Pages + eigene Domain
+## Deployment: GitHub Pages (Projekt-URL, ohne eigene Domain)
 
-Die Seite wird über GitHub Actions automatisch gebaut und auf GitHub Pages
-veröffentlicht (`.github/workflows/deploy.yml`, läuft bei jedem Push auf
-`main`). Da GitHub Pages nur statische Dateien ausliefert und – anders als
-Netlify – keinen eingebauten CMS-Login mitbringt, übernimmt dafür ein
-winziger, separat gehosteter Cloudflare Worker den GitHub-OAuth-Handshake
-(siehe `cms-oauth-worker/README.md` für die Einrichtung, dauert ca. 10
-Minuten und ist ebenfalls kostenlos).
+Die Seite ist aktuell auf die GitHub-Pages-Projekt-URL
+`https://sihltalerhof.github.io/sihltalerhof/` konfiguriert (siehe
+`base` in `astro.config.mjs`). Alle internen Links und Bildpfade laufen
+über den Helper `src/lib/base.ts` (`withBase()`), der automatisch den
+richtigen Pfadpräfix voranstellt – dadurch funktioniert die Seite korrekt
+unter dem `/sihltalerhof/`-Unterpfad, inklusive CSS und Bildern.
+
+Gebaut und veröffentlicht wird automatisch über GitHub Actions
+(`.github/workflows/deploy.yml`, läuft bei jedem Push auf `main`).
 
 ### Einmalige Einrichtung
 
 1. **Repo-Einstellungen**: GitHub → Settings → Pages → Source: "GitHub
-   Actions" auswählen (statt "Deploy from a branch").
-2. **Eigene Domain**: `public/CNAME` enthält bereits `sihltalerhof.ch`.
-   Beim Domain-Registrar einen DNS-Eintrag auf GitHub Pages setzen
-   (A-Records auf die GitHub-Pages-IPs oder ein ALIAS/ANAME-Record je nach
-   Registrar – Details: [GitHub-Doku zu Custom Domains](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site)).
-   Danach in den Pages-Einstellungen "Enforce HTTPS" aktivieren.
-3. **CMS-Login**: `cms-oauth-worker/README.md` durcharbeiten (GitHub OAuth
+   Actions" auswählen (statt "Deploy from a branch") – sonst schlägt der
+   Deploy-Schritt mit `HttpError: Not Found` fehl.
+2. **CMS-Login**: `cms-oauth-worker/README.md` durcharbeiten (GitHub OAuth
    App erstellen, Worker deployen, `base_url` in `public/admin/config.yml`
-   auf die eigene Worker-URL setzen).
-4. Repo ist öffentlich (Voraussetzung für kostenloses GitHub Pages) – das
-   Client Secret aus Schritt 3 liegt nicht im Repo, sondern nur als Worker-
+   auf die eigene Worker-URL setzen) – GitHub Pages hat anders als Netlify
+   keinen eingebauten CMS-Login.
+3. Repo ist öffentlich (Voraussetzung für kostenloses GitHub Pages) – das
+   Client Secret aus Schritt 2 liegt nicht im Repo, sondern nur als Worker-
    Secret bei Cloudflare.
 
-Laufende Kosten: 0 CHF/Monat (GitHub Pages + Cloudflare Workers Free Tier
-reichen für diese Seitengrösse bei weitem), einzige Fixkosten bleiben wie
-bisher die Domain-Registrierung.
+Laufende Kosten: 0 CHF/Monat.
+
+### Später auf eigene Domain (z.B. sihltalerhof.ch) umstellen
+
+1. `astro.config.mjs`: `base` entfernen, `site` auf `https://sihltalerhof.ch`
+   setzen.
+2. `public/CNAME` mit Inhalt `sihltalerhof.ch` anlegen.
+3. Beim DNS-Anbieter der Domain A-Records auf die GitHub-Pages-IPs setzen
+   (Details: [GitHub-Doku zu Custom Domains](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site)),
+   danach in den Pages-Einstellungen "Enforce HTTPS" aktivieren.
+
+Da alle Links über `withBase()` laufen, ist dafür keine weitere Code-
+Änderung nötig – nur die zwei Config-Anpassungen oben.
 
 ### Alternative: Netlify
 
