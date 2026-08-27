@@ -158,7 +158,7 @@ img {
 
 .site-header .brand-name {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--cream);
   letter-spacing: 0.01em;
@@ -174,7 +174,7 @@ nav.main-nav {
 nav.main-nav a {
   color: var(--cream);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   padding-bottom: 3px;
@@ -248,15 +248,24 @@ nav.main-nav a[aria-current="page"] {
 
 .framed-photo {
   border-radius: var(--radius);
-  overflow: hidden;
   object-fit: cover;
-  margin-bottom: var(--space-3);
 }
 
 .framed-photo--portrait {
-  max-width: 300px;
-  aspect-ratio: 3 / 4;
-  width: 100%;
+  float: left;
+  width: 300px;
+  aspect-ratio: 1 / 1;
+  object-position: 50% 75%;
+  margin: 0 var(--space-3) var(--space-2) 0;
+}
+
+@media (max-width: 640px) {
+  .framed-photo--portrait {
+    float: none;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto var(--space-3);
+  }
 }
 
 .hero-banner p {
@@ -301,6 +310,7 @@ main.content {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: var(--space-3) var(--space-2) var(--space-5);
+  display: flow-root;
 }
 
 .notice {
@@ -324,7 +334,7 @@ main.content {
 .termine-list {
   list-style: none;
   padding: 0;
-  margin: var(--space-2) 0 0;
+  margin: var(--space-2) 0 var(--space-3);
   max-width: 340px;
 }
 

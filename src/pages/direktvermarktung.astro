@@ -37,7 +37,7 @@ const noticeEntries = await Promise.all(
       </ScheduledText>
     ))}
 
-    <Content />
+    {page.data.intro && <h3>{page.data.intro}</h3>}
 
     <h2>Die nächsten Termine</h2>
     <ul class="termine-list" data-termine-liste>
@@ -51,5 +51,7 @@ const noticeEntries = await Promise.all(
     <noscript>
       <p>Für die aktuellen Termine kontaktieren Sie uns bitte telefonisch oder per E-Mail.</p>
     </noscript>
+
+    <Content />
   </div>
 </Layout>
