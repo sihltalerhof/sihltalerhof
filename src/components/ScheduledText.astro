@@ -1,0 +1,12 @@
+---
+interface Props {
+  from?: Date | string;
+  until?: Date | string;
+  as?: string;
+}
+const { from, until, as: Tag = 'div' } = Astro.props;
+const toISO = (d?: Date | string) => (d ? new Date(d).toISOString() : undefined);
+---
+<Tag class="scheduled-text" data-schedule data-from={toISO(from)} data-until={toISO(until)}>
+  <slot />
+</Tag>

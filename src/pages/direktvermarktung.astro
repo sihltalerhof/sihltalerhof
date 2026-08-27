@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScheduledText from '../components/ScheduledText.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'direktvermarktung');
+if (!page) throw new Error('pages/direktvermarktung.md fehlt');
+const { Content } = await render(page);
+
+const termine = (await getCollection('termine'))
+  .sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime());
+
+const formatter = new Intl.DateTimeFormat('de-CH', {
+  weekday: 'long',
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+});
+
+const noticeEntries = await Promise.all(
+  (await getCollection('notices'))
+    .filter((n) => n.data.page === 'direktvermarktung')
+    .map(async (n) => ({ entry: n, Content: (await render(n)).Content }))
+);
+---
+<Layout title={page.data.title}>
+  {noticeEntries.map(({ entry, Content: NoticeContent }) => (
+    <ScheduledText from={entry.data.from} until={entry.data.until}>
+      <div class="notice">
+        <strong>{entry.data.title}</strong>
+        <NoticeContent />
+      </div>
+    </ScheduledText>
+  ))}
+
+  <Content />
+
+  <h2>Die nächsten Termine</h2>
+  <ul class="termine-list" data-termine-liste>
+    {termine.map((t) => (
+      <li data-termin={t.data.datum.toISOString()}>
+        {formatter.format(t.data.datum)}, {t.data.uhrzeit} Uhr
+      </li>
+    ))}
+    <li data-termine-leer style="display:none;">Zur Zeit sind keine Termine bekannt.</li>
+  </ul>
+  <noscript>
+    <p>Für die aktuellen Termine kontaktieren Sie uns bitte telefonisch oder per E-Mail.</p>
+  </noscript>
+</Layout>

@@ -1,0 +1,87 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Erlaubt lokales Testen der Bearbeitungsoberfläche ohne Netlify:
+# `npx decap-server` in einem zweiten Terminal starten, dann /admin/ aufrufen.
+local_backend: true
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "pages"
+    label: "Seiteninhalte"
+    files:
+      - file: "src/content/pages/home.md"
+        label: "Startseite"
+        name: "home"
+        fields:
+          - { label: "Titel / Slogan", name: "title", widget: "string" }
+          - { label: "Text", name: "body", widget: "markdown" }
+
+      - file: "src/content/pages/ueber-uns.md"
+        label: "Über uns"
+        name: "ueber-uns"
+        fields:
+          - { label: "Titel", name: "title", widget: "string" }
+          - { label: "Text", name: "body", widget: "markdown" }
+
+      - file: "src/content/pages/direktvermarktung.md"
+        label: "Direktvermarktung"
+        name: "direktvermarktung"
+        fields:
+          - { label: "Titel", name: "title", widget: "string" }
+          - { label: "Text", name: "body", widget: "markdown" }
+
+      - file: "src/content/pages/hofladen.md"
+        label: "Hofladen"
+        name: "hofladen"
+        fields:
+          - { label: "Titel", name: "title", widget: "string" }
+          - { label: "Text", name: "body", widget: "markdown" }
+
+  - name: "termine"
+    label: "Direktvermarktung – Termine"
+    folder: "src/content/termine"
+    create: true
+    delete: true
+    identifier_field: "datum"
+    fields:
+      - {
+          label: "Datum",
+          name: "datum",
+          widget: "datetime",
+          date_format: "DD.MM.YYYY",
+          time_format: false,
+        }
+      - { label: "Uhrzeit", name: "uhrzeit", widget: "string", default: "18:00" }
+
+  - name: "notices"
+    label: "Zeitlich begrenzte Hinweise"
+    folder: "src/content/notices"
+    create: true
+    delete: true
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - label: "Auf welcher Seite?"
+        name: "page"
+        widget: "select"
+        options:
+          - { label: "Home", value: "home" }
+          - { label: "Über uns", value: "ueber-uns" }
+          - { label: "Direktvermarktung", value: "direktvermarktung" }
+          - { label: "Hofladen", value: "hofladen" }
+      - {
+          label: "Sichtbar ab (leer = sofort)",
+          name: "from",
+          widget: "datetime",
+          required: false,
+        }
+      - {
+          label: "Sichtbar bis (leer = unbegrenzt)",
+          name: "until",
+          widget: "datetime",
+          required: false,
+        }
+      - { label: "Text", name: "body", widget: "markdown" }

@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScheduledText from '../components/ScheduledText.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'hofladen');
+if (!page) throw new Error('pages/hofladen.md fehlt');
+const { Content } = await render(page);
+
+const noticeEntries = await Promise.all(
+  (await getCollection('notices'))
+    .filter((n) => n.data.page === 'hofladen')
+    .map(async (n) => ({ entry: n, Content: (await render(n)).Content }))
+);
+---
+<Layout title={page.data.title}>
+  {noticeEntries.map(({ entry, Content: NoticeContent }) => (
+    <ScheduledText from={entry.data.from} until={entry.data.until}>
+      <div class="notice">
+        <strong>{entry.data.title}</strong>
+        <NoticeContent />
+      </div>
+    </ScheduledText>
+  ))}
+
+  <Content />
+
+  <div class="gallery">
+    <img src="/images/site/hofladen-1.jpg" alt="Hofladen" />
+    <img src="/images/site/hofladen-2.jpg" alt="Hofladen" />
+    <img src="/images/site/hofladen-3.jpg" alt="Hofladen" />
+    <img src="/images/site/hofladen-4.jpg" alt="Hofladen" />
+  </div>
+</Layout>

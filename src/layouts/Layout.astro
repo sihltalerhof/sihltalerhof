@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Sihltalerhof – Bio-Bauernhof in Studen' } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/ueber-uns/', label: 'über uns' },
+  { href: '/direktvermarktung/', label: 'Direktvermarktung' },
+  { href: '/hofladen/', label: 'Hofladen' },
+];
+---
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/images/site/logo.png" />
+    <title>{title} | Sihltalerhof</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="inner">
+        <a href="/" class="brand">
+          <img class="logo" src="/images/site/logo.png" alt="Sihltalerhof Logo" />
+        </a>
+        <nav class="main-nav">
+          {navItems.map((item) => (
+            <a
+              href={item.href}
+              aria-current={currentPath === item.href ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <p class="tagline">Kühe würden den Sihltalerhof wählen</p>
+
+    <main class="content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} Sihltalerhof · Adelmatt 11, 8845 Studen</p>
+      <p><a href="mailto:info@sihltalerhof.ch">info@sihltalerhof.ch</a></p>
+    </footer>
+
+    <script>
+      function applySchedule() {
+        const now = new Date();
+
+        document.querySelectorAll<HTMLElement>('[data-schedule]').forEach((el) => {
+          const from = el.dataset.from ? new Date(el.dataset.from) : null;
+          const until = el.dataset.until ? new Date(el.dataset.until) : null;
+          const visible = (!from || now >= from) && (!until || now <= until);
+          el.style.display = visible ? '' : 'none';
+        });
+
+        document.querySelectorAll<HTMLElement>('[data-termin]').forEach((el) => {
+          const raw = el.dataset.termin;
+          const datum = raw ? new Date(raw) : null;
+          const endOfDay = datum ? new Date(datum.getTime() + 24 * 60 * 60 * 1000) : null;
+          const visible = !endOfDay || now <= endOfDay;
+          el.style.display = visible ? '' : 'none';
+        });
+
+        document.querySelectorAll<HTMLElement>('[data-termine-liste]').forEach((list) => {
+          const anyVisible = Array.from(
+            list.querySelectorAll<HTMLElement>('[data-termin]')
+          ).some((el) => el.style.display !== 'none');
+          const empty = list.querySelector<HTMLElement>('[data-termine-leer]');
+          if (empty) empty.style.display = anyVisible ? 'none' : '';
+        });
+      }
+
+      applySchedule();
+    </script>
+  </body>
+</html>

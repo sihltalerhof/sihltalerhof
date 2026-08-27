@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScheduledText from '../components/ScheduledText.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+const page = await getEntry('pages', 'ueber-uns');
+if (!page) throw new Error('pages/ueber-uns.md fehlt');
+const { Content } = await render(page);
+
+const noticeEntries = await Promise.all(
+  (await getCollection('notices'))
+    .filter((n) => n.data.page === 'ueber-uns')
+    .map(async (n) => ({ entry: n, Content: (await render(n)).Content }))
+);
+---
+<Layout title={page.data.title}>
+  <div class="gallery" style="max-width:320px;">
+    <img src="/images/site/familie.jpg" alt="Familie Fässler-Günthard" />
+  </div>
+
+  {noticeEntries.map(({ entry, Content: NoticeContent }) => (
+    <ScheduledText from={entry.data.from} until={entry.data.until}>
+      <div class="notice">
+        <strong>{entry.data.title}</strong>
+        <NoticeContent />
+      </div>
+    </ScheduledText>
+  ))}
+
+  <Content />
+</Layout>
